@@ -26,3 +26,30 @@ export const Panel: Story = {
         ],
     },
 };
+
+const numberArray = [1, 2, 3, 4];
+
+export const MultiPanel: Story = {
+    args: {
+        tabs: [
+            {
+                title: "Tab 1",
+                content: (
+                    <div className="flex flex-col gap-1 items-center">
+                        <p className="text-lg">Header of Test Content 1</p>
+                        <div className="text-white bg-black text-lg p-4 rounded-lg">
+                            Boxed main content of Test Content 1
+                        </div>
+                        <p className="text-lg">Bottom text of Test Content 1</p>
+                    </div>
+                ),
+            },
+            {
+                title: "Tab 2",
+                content: numberArray.map((number) => {
+                    return <div>{number}</div>;
+                }),
+            },
+        ],
+    },
+};
