@@ -1,8 +1,31 @@
-export default function Accordion() {
+import { useState, ReactNode } from "react";
+
+export type AccordionItem = {
+    title: string;
+    content: string | ReactNode;
+};
+
+type AccordionProps = {
+    items: AccordionItem[];
+};
+
+export default function Accordion(props: AccordionProps) {
+    const [isOpen, setIsOpen] = useState<number | null>(null);
+
     return (
         <div>
-            <div className="text-red-500">Hello World1</div>
-            <div className="text-blue-500">Hello World2</div>
+            {props.items.map((item, index) => (
+                <div key={index}>
+                    <button
+                        onClick={() =>
+                            setIsOpen(isOpen === index ? null : index)
+                        }
+                    >
+                        {item.title}
+                    </button>
+                    {isOpen === index && <div>{item.content}</div>}
+                </div>
+            ))}
         </div>
     );
 }
