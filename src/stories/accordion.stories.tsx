@@ -5,6 +5,13 @@ import { AccordionItem } from "./accordion";
 const meta: Meta<typeof Accordion> = {
     title: "Accordion",
     component: Accordion,
+    decorators: [
+        (Story) => (
+            <div className="w-1/2">
+                <Story />
+            </div>
+        ),
+    ],
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -63,6 +70,18 @@ const accordionItems: AccordionItem[] = [
         ),
     },
 ];
+
+const singleAccordionItem: AccordionItem[] = [
+    {
+        title: "Single Accordion Item",
+        content:
+            "This is a single accordion item. Its only purpose is to meet the acceptance criteria of the task.",
+    },
+];
+
+export const singleAccordionStory: Story = {
+    args: { items: singleAccordionItem },
+};
 
 export const AccordionStorie: Story = {
     args: {
