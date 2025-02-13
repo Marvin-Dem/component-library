@@ -12,23 +12,29 @@ type AccordionProps = {
 };
 
 export default function Accordion(props: AccordionProps) {
-    const [isOpen, setIsOpen] = useState<number | null>(null);
     const [autoAnimate] = useAutoAnimate();
+    const [openItems, setOpenItems] = useState<boolean[]>(
+        props.items.map(() => {
+            return false;
+        })
+    );
 
     return (
         <div>
             {props.items.map((item, index) => (
-                <div
-                    key={index}
-                    className="cursor-pointer"
-                    onClick={() => setIsOpen(isOpen === index ? null : index)}
-                    ref={autoAnimate}
-                >
-                    <div className="text-white bg-black rounded-lg flex justify-between text-xl my-2">
+                <div key={index} ref={autoAnimate}>
+                    <div
+                        className="cursor-pointer text-white bg-black rounded-lg flex justify-between text-xl my-2"
+                        onClick={() => {
+                            const itemArray = [...openItems];
+                            itemArray[index] = !itemArray[index];
+                            setOpenItems(itemArray);
+                        }}
+                    >
                         <p className="mx-2">{item.title}</p>
                         <IoIosArrowDropdownCircle className="m-2" />
                     </div>
-                    {isOpen === index && (
+                    {openItems[index] && (
                         <div className="my-2">{item.content}</div>
                     )}
                 </div>
