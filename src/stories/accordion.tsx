@@ -9,6 +9,7 @@ export type AccordionItem = {
 
 type AccordionProps = {
     items: AccordionItem[];
+    allowMultiple: boolean;
 };
 
 export default function Accordion(props: AccordionProps) {
@@ -26,8 +27,15 @@ export default function Accordion(props: AccordionProps) {
                     <div
                         className="cursor-pointer text-white bg-black rounded-lg flex justify-between text-xl my-2"
                         onClick={() => {
-                            const itemArray = [...openItems];
-                            itemArray[index] = !itemArray[index];
+                            let itemArray = [...openItems];
+                            if (props.allowMultiple) {
+                                itemArray[index] = !itemArray[index];
+                            } else {
+                                itemArray = itemArray.map(() => {
+                                    return false;
+                                });
+                                itemArray[index] = !openItems[index];
+                            }
                             setOpenItems(itemArray);
                         }}
                     >

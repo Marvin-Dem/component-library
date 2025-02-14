@@ -79,12 +79,20 @@ const singleAccordionItem: AccordionItem[] = [
     },
 ];
 
-export const singleAccordionStory: Story = {
+export const SingleAccordionStory: Story = {
     args: { items: singleAccordionItem },
 };
 
 export const AccordionStorie: Story = {
     args: {
         items: accordionItems,
+        allowMultiple: true,
+    },
+};
+
+export const AllowOneOpeningAccordion: Story = {
+    args: {
+        items: accordionItems,
+        allowMultiple: false,
     },
 };
