@@ -45,7 +45,7 @@ export default function Flashcard(props: FlashcardProps) {
                             flipped ? "rotate-y-180" : "rotate-y-0"
                         }`}
                     >
-                        <div className="absolute w-full h-full flex justify-center items-center bg-gray-200 backface-hidden p-4 font-bold rounded-lg">
+                        <div className="absolute w-full h-full flex justify-center items-center bg-gray-200 backface-hidden font-bold rounded-lg">
                             {showAnswer
                                 ? props.items[index].answer
                                 : props.items[index].question}
