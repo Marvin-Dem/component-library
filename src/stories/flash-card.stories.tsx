@@ -10,7 +10,7 @@ const meta: Meta<typeof Flashcard> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const FlashcardItems: FlashcardItem[] = [
+const flashcardItems: FlashcardItem[] = [
     {
         question: "Test Question 1",
         answer: "Test Answer 1",
@@ -30,5 +30,5 @@ const FlashcardItems: FlashcardItem[] = [
 ];
 
 export const FlashcardStory: Story = {
-    args: { items: FlashcardItems },
+    args: { items: flashcardItems },
 };
