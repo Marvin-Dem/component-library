@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 export type FlashcardItem = {
@@ -15,12 +15,6 @@ export default function Flashcard(props: FlashcardProps) {
     const [index, setIndex] = useState<number>(0);
     const [flipped, setFlipped] = useState<boolean>(false);
 
-    useEffect(() => {
-        setFlipped(true);
-        const timeout = setTimeout(() => setFlipped(false), 300);
-        return () => clearTimeout(timeout);
-    }, [index, showAnswer]);
-
     const handleNext = () => {
         if (index < props.items.length - 1) {
             setIndex(index + 1);
@@ -35,13 +29,21 @@ export default function Flashcard(props: FlashcardProps) {
         }
     };
 
+    const handleFlip = () => {
+        setFlipped(true);
+        setTimeout(() => {
+            setShowAnswer((prev) => !prev);
+            setFlipped(false);
+        }, 500);
+    };
+
     return (
         <div className="w-1/2">
             <p className="font-bold text-lg">Flash Cards</p>
             <div className="border border-gray-400 rounded-lg">
-                <div className="relative perspective-1000">
+                <div className="relative">
                     <div
-                        className={`w-full h-40 transform-style-preserve-3d transition-transform duration-300 ${
+                        className={`w-full h-40 transition-transform duration-500 transform-style-3d ${
                             flipped ? "rotate-y-180" : "rotate-y-0"
                         }`}
                     >
@@ -52,18 +54,16 @@ export default function Flashcard(props: FlashcardProps) {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-lg flex justify-between bg-gray-200 m-2">
-                    <div
-                        className="flex items-center gap-2 cursor-pointer"
+                <div className="rounded-lg flex justify-between bg-gray-200">
+                    <button
+                        className="flex items-center gap-2 cursor-pointer disabled:text-gray-400"
                         onClick={handlePrevious}
+                        disabled={index === 0}
                     >
                         <IoIosArrowDropleft />
                         <div>Previous</div>
-                    </div>
-                    <button
-                        className="cursor-pointer"
-                        onClick={() => setShowAnswer(!showAnswer)}
-                    >
+                    </button>
+                    <button className="cursor-pointer" onClick={handleFlip}>
                         {showAnswer ? "Hide Answer" : "Show Answer"}
                     </button>
                     <button
