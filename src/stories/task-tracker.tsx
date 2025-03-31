@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 
 export default function TaskTracker() {
     const [tasks, setTasks] = useState<{ text: string; marked: boolean }[]>([]);
     const [inputValue, setInputValue] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const addTask = () => {
         setTasks(
@@ -12,6 +13,7 @@ export default function TaskTracker() {
             )
         );
         setInputValue("");
+        inputRef.current?.focus();
     };
 
     const checkTask = (index: number) => {
@@ -35,11 +37,13 @@ export default function TaskTracker() {
             <div>Task Tracker</div>
             <div className="border rounded-xl">
                 <input
+                    autoFocus={true}
                     className="w-80"
                     type="text"
                     value={inputValue}
                     placeholder="Start writing and press enter to create task"
                     onChange={(e) => setInputValue(e.target.value)}
+                    ref={inputRef}
                 />
                 <button className="cursor-pointer" onClick={addTask}>
                     Add
@@ -60,10 +64,12 @@ export default function TaskTracker() {
                         >
                             {task.text}
                         </li>
-                        <FaTrashCan
+                        <button
                             className="cursor-pointer"
                             onClick={() => removeTask(index)}
-                        />
+                        >
+                            <FaTrashCan />
+                        </button>
                     </div>
                 ))}
             </ul>
