@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 
+type Task = { text: string; marked: boolean };
+
 export default function TaskTracker() {
-    type Task = { text: string; marked: boolean };
     const [tasks, setTasks] = useState<Task[]>([]);
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
