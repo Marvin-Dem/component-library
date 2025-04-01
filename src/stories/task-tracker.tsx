@@ -19,17 +19,13 @@ export default function TaskTracker() {
     const checkTask = (index: number) => {
         const updatedTasks = tasks.slice();
         updatedTasks[index].marked = !updatedTasks[index].marked;
-        setTasks(
-            updatedTasks.sort((a, b) => Number(a.marked) - Number(b.marked))
-        );
+        setTasks(updatedTasks);
     };
 
     const removeTask = (index: number) => {
         const updatedTasks = tasks.slice();
         updatedTasks.splice(index, 1);
-        setTasks(
-            updatedTasks.sort((a, b) => Number(a.marked) - Number(b.marked))
-        );
+        setTasks(updatedTasks);
     };
 
     return (
@@ -50,28 +46,32 @@ export default function TaskTracker() {
                 </button>
             </div>
             <ul>
-                {tasks.map((task, index) => (
-                    <div key={index} className="flex">
-                        <input
-                            type="checkbox"
-                            checked={task.marked}
-                            onChange={() => checkTask(index)}
-                        />
-                        <li
-                            className={`m-1 ${
-                                task.marked ? "line-through text-gray-500" : ""
-                            }`}
-                        >
-                            {task.text}
-                        </li>
-                        <button
-                            className="cursor-pointer"
-                            onClick={() => removeTask(index)}
-                        >
-                            <FaTrashCan />
-                        </button>
-                    </div>
-                ))}
+                {tasks
+                    .sort((a, b) => Number(a.marked) - Number(b.marked))
+                    .map((task, index) => (
+                        <div key={index} className="flex">
+                            <input
+                                type="checkbox"
+                                checked={task.marked}
+                                onChange={() => checkTask(index)}
+                            />
+                            <li
+                                className={`m-1 ${
+                                    task.marked
+                                        ? "line-through text-gray-500"
+                                        : ""
+                                }`}
+                            >
+                                {task.text}
+                            </li>
+                            <button
+                                className="cursor-pointer"
+                                onClick={() => removeTask(index)}
+                            >
+                                <FaTrashCan />
+                            </button>
+                        </div>
+                    ))}
             </ul>
         </div>
     );
