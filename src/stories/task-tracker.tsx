@@ -2,16 +2,13 @@ import { useState, useRef } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 
 export default function TaskTracker() {
-    const [tasks, setTasks] = useState<{ text: string; marked: boolean }[]>([]);
+    type Task = { text: string; marked: boolean };
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 
     const addTask = () => {
-        setTasks(
-            [...tasks, { text: inputValue, marked: false }].sort(
-                (a, b) => Number(a.marked) - Number(b.marked)
-            )
-        );
+        setTasks([...tasks, { text: inputValue, marked: false }]);
         setInputValue("");
         inputRef.current?.focus();
     };
@@ -46,14 +43,14 @@ export default function TaskTracker() {
                 </button>
             </div>
             <ul>
-                {tasks
+                {[...tasks]
                     .sort((a, b) => Number(a.marked) - Number(b.marked))
                     .map((task, index) => (
                         <div key={index} className="flex">
                             <input
                                 type="checkbox"
                                 checked={task.marked}
-                                onChange={() => checkTask(index)}
+                                onChange={() => checkTask(tasks.indexOf(task))}
                             />
                             <li
                                 className={`m-1 ${
