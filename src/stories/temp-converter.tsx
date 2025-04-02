@@ -1,44 +1,51 @@
 import { useState, useEffect } from "react";
 
 export type TempConverterProps = {
-    items: string[];
+    tempNames: string[];
 };
 
-export default function TempConverter(props: TempConverterProps) {
-    const [startUnit, setStartUnit] = useState<string>("");
-    const [endUnit, setEndUnit] = useState<string>("");
-    const [temperature, setTemperature] = useState<string>("");
-    const [convertedTemp, setConvertedTemp] = useState<string>("");
+type Unit = "Celsius" | "Fahrenheit" | "Kelvin";
+const tempUnits = ["Celsius", "Fahrenheit", "Kelvin"] as const;
+
+export default function TempConverter() {
+    const [startUnit, setStartUnit] = useState<Unit | "">("");
+    const [endUnit, setEndUnit] = useState<Unit | "">("");
+    const [temperature, setTemperature] = useState<number>(0);
+    const [convertedTemp, setConvertedTemp] = useState<number>();
 
     const isDisabled = !temperature || !startUnit || !endUnit;
 
-    const convertTemperature = (value: number, from: string, to: string) => {
-        if (from === to) return value;
-
-        if (from === "Celsius" && to === "Fahrenheit")
+    const convertTemperature = (value: number, from: Unit, to: Unit) => {
+        if (from === to) {
+            return value;
+        }
+        if (from === "Celsius" && to === "Fahrenheit") {
             return (value * 9) / 5 + 32;
-        if (from === "Celsius" && to === "Kelvin") return value + 273.15;
-        if (from === "Fahrenheit" && to === "Celsius")
+        }
+        if (from === "Celsius" && to === "Kelvin") {
+            return value + 273.15;
+        }
+        if (from === "Fahrenheit" && to === "Celsius") {
             return ((value - 32) * 5) / 9;
-        if (from === "Fahrenheit" && to === "Kelvin")
+        }
+        if (from === "Fahrenheit" && to === "Kelvin") {
             return ((value - 32) * 5) / 9 + 273.15;
-        if (from === "Kelvin" && to === "Celsius") return value - 273.15;
-        if (from === "Kelvin" && to === "Fahrenheit")
+        }
+        if (from === "Kelvin" && to === "Celsius") {
+            return value - 273.15;
+        }
+        if (from === "Kelvin" && to === "Fahrenheit") {
             return ((value - 273.15) * 9) / 5 + 32;
-
-        return NaN;
+        }
+        return NaN; //unreachable but necessary for Typescript
     };
 
     useEffect(() => {
         if (!isDisabled) {
-            const result = convertTemperature(
-                parseFloat(temperature),
-                startUnit,
-                endUnit
-            );
-            setConvertedTemp(result.toFixed(2));
+            const result = convertTemperature(temperature, startUnit, endUnit);
+            setConvertedTemp(result);
         } else {
-            setConvertedTemp("");
+            setConvertedTemp(0);
         }
     }, [temperature, startUnit, endUnit, isDisabled]);
 
@@ -48,17 +55,17 @@ export default function TempConverter(props: TempConverterProps) {
             <p>Enter the temperature, select units and submit.</p>
             <div className="flex gap-4">
                 <input
-                    type="text"
+                    type="number"
                     placeholder="0.00"
                     value={temperature}
-                    onChange={(e) => setTemperature(e.target.value)}
+                    onChange={(e) => setTemperature(parseFloat(e.target.value))}
                 />
                 <select
                     value={startUnit}
-                    onChange={(e) => setStartUnit(e.target.value)}
+                    onChange={(e) => setStartUnit(e.target.value as "" | Unit)}
                 >
                     <option value="">Select Unit</option>
-                    {props.items
+                    {tempUnits
                         .filter((unit) => unit !== endUnit)
                         .map((unit) => (
                             <option key={unit} value={unit}>
@@ -68,10 +75,10 @@ export default function TempConverter(props: TempConverterProps) {
                 </select>
                 <select
                     value={endUnit}
-                    onChange={(e) => setEndUnit(e.target.value)}
+                    onChange={(e) => setEndUnit(e.target.value as "" | Unit)}
                 >
                     <option value="">Select Unit</option>
-                    {props.items
+                    {tempUnits
                         .filter((unit) => unit !== startUnit)
                         .map((unit) => (
                             <option key={unit} value={unit}>
@@ -85,21 +92,25 @@ export default function TempConverter(props: TempConverterProps) {
                         isDisabled ? "bg-gray-500" : "bg-black"
                     }`}
                     onClick={() => {
+                        if (startUnit === "" || endUnit === "") {
+                            return;
+                        }
                         const result = convertTemperature(
-                            parseFloat(temperature),
+                            temperature,
                             startUnit,
                             endUnit
                         );
-                        setConvertedTemp(result.toFixed(2));
+                        setConvertedTemp(result);
                     }}
                 >
                     Convert
                 </button>
             </div>
-            <p>
-                {convertedTemp &&
-                    `${temperature} ${startUnit} is ${convertedTemp} ${endUnit}`}
-            </p>
+            {convertedTemp && (
+                <p>
+                    {`${temperature} ${startUnit} is ${convertedTemp} ${endUnit}`}
+                </p>
+            )}
         </div>
     );
 }

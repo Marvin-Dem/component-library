@@ -9,8 +9,6 @@ const meta: Meta<typeof TempConverter> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const tempUnits: string[] = ["Celsius", "Fahrenheit", "Kelvin"];
-
 export const TempConverterStory: Story = {
-    args: { items: tempUnits },
+    args: {},
 };
