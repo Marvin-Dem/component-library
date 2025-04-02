@@ -4,8 +4,8 @@ export type TempConverterProps = {
     tempNames: string[];
 };
 
-type Unit = "Celsius" | "Fahrenheit" | "Kelvin";
-const tempUnits = ["Celsius", "Fahrenheit", "Kelvin"] as const;
+type Unit = (typeof units)[number];
+const units = ["Celsius", "Fahrenheit", "Kelvin"] as const;
 
 export default function TempConverter() {
     const [startUnit, setStartUnit] = useState<Unit | "">("");
@@ -65,7 +65,7 @@ export default function TempConverter() {
                     onChange={(e) => setStartUnit(e.target.value as "" | Unit)}
                 >
                     <option value="">Select Unit</option>
-                    {tempUnits
+                    {units
                         .filter((unit) => unit !== endUnit)
                         .map((unit) => (
                             <option key={unit} value={unit}>
@@ -78,7 +78,7 @@ export default function TempConverter() {
                     onChange={(e) => setEndUnit(e.target.value as "" | Unit)}
                 >
                     <option value="">Select Unit</option>
-                    {tempUnits
+                    {units
                         .filter((unit) => unit !== startUnit)
                         .map((unit) => (
                             <option key={unit} value={unit}>

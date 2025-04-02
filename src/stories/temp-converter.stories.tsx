@@ -9,6 +9,4 @@ const meta: Meta<typeof TempConverter> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const TempConverterStory: Story = {
-    args: {},
-};
+export const TempConverterStory: Story = {};
