@@ -1,10 +1,8 @@
 import { FormEventHandler, useState } from "react";
 
 export default function FormUI() {
-    const [passwordError, setPasswordError] = useState<string | undefined>();
-    const [confirmPasswordError, setConfirmPasswordError] = useState<
-        string | undefined
-    >();
+    const [passwordError, setPasswordError] = useState<string>();
+    const [confirmPasswordError, setConfirmPasswordError] = useState<string>();
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (formInput) => {
         formInput.preventDefault();
@@ -15,15 +13,19 @@ export default function FormUI() {
             formInput.currentTarget["confirm-password"].value;
 
         if (password.length < 8) {
-            setPasswordError("Password must be at least 8 charakters long.");
-        } else if (password !== confirmPassword) {
-            setConfirmPasswordError("Passwords do not match!");
+            setPasswordError("Password must be at least 8 characters long.");
         } else {
             setPasswordError(undefined);
-            console.dir(fullname);
-            console.dir(email);
-            console.dir(password);
-            console.dir(confirmPassword);
+        }
+
+        if (password !== confirmPassword) {
+            setConfirmPasswordError("Passwords do not match!");
+        } else {
+            setConfirmPasswordError(undefined);
+        }
+
+        if (password.length >= 8 && password === confirmPassword) {
+            console.table([fullname, email, password, confirmPassword]);
         }
     };
     return (
